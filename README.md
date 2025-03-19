@@ -9,6 +9,7 @@ This is a simple blockchain-based cryptocurrency implementation using Python and
 - Allows adding and validating transactions
 - Maintains a decentralized blockchain with multiple nodes
 - Supports balance checking and transaction history
+- React UI to interact with the blockchain
 
 ## Requirements
 Make sure you have Python installed and install the required dependencies:
@@ -18,9 +19,17 @@ pip install requirements.txt
 ## Steps to Run
 1. Navigate to the project folder and run the following command:
 
+cd chain-backend
+pip install -r requirements.txt
 python node5001.py
 
 2. The blockchain will start running on `http://0.0.0.0:5001`.
+
+3. Navigate to the ui folder and run the following command:
+
+cd chain-ui
+npm install
+npm run dev
 
 ## API Endpoints
 
@@ -72,3 +81,6 @@ python node5001.py
 To simulate a network with multiple nodes:
 - Change the port number in app.run() (e.g., `5002`, `5003`) and run the script multiple times.
 - Use /connect_node to link the nodes.
+
+
+
