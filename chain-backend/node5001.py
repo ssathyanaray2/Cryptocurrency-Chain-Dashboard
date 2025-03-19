@@ -4,11 +4,11 @@ from flask import Flask, jsonify, request
 import requests
 from uuid import uuid4
 from urllib.parse import urlparse
-from Crypto.PublicKey import RSA
-from Crypto.Signature.pkcs1_15 import PKCS115_SigScheme
-from Crypto.Hash import SHA256
+from Cryptodome.PublicKey import RSA
+from Cryptodome.Signature.pkcs1_15 import PKCS115_SigScheme
+from Cryptodome.Hash import SHA256
 from base64 import b64encode, b64decode
-
+from flask_cors import CORS
 
 class Blockchain:
     def rsakeys(self):  
@@ -169,7 +169,7 @@ class Blockchain:
         return True
     
     def showpending_transactions(self):
-        return str(self.transactions)
+        return self.transactions
         
         
     def balance(self, publickey=""):
@@ -189,6 +189,8 @@ class Blockchain:
     
 #flask application   
 app=Flask(__name__)
+
+CORS(app)
 
 node_address=str(uuid4()).replace('-','')
 
@@ -285,9 +287,20 @@ def show_transactions():
     if len(pending_transactions)==0:
         response={'message':'There are no pending transactions',
                   'pending_transactions':pending_transactions}
+        return response
     else:
-        response={'pending_transactions': pending_transactions}
-    return jsonify(response), 200
+        filtered_transactions = [
+        {
+            "sender": transaction["sender"],
+            "receiver": transaction["receiver"],
+            "amount": transaction["amount"]
+        }
+        for transaction in pending_transactions
+        ]
+
+        print(filtered_transactions)
+        return jsonify({'pending_transactions': filtered_transactions}), 200
+
 
 @app.route('/calculate_balance', methods=['GET'])
 def calculate_balance():
